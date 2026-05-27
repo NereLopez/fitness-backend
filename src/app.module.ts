@@ -4,6 +4,12 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { User } from './users/entities/user.entity';
+import { NutritionModule } from './nutrition/nutrition.module';
+import { ExercisesModule } from './exercises/exercises.module';
+import { TrainingSessionsModule } from './training-sessions/training-sessions.module';
+import { Nutrition } from './nutrition/entities/nutrition.entity';
+import { TrainingSession } from './training-sessions/entities/training-session.entity';
+import { Exercise } from './exercises/entities/exercise.entity';
 
 @Module({
   imports: [
@@ -14,11 +20,17 @@ import { User } from './users/entities/user.entity';
       username: 'nerea',
       password: '1234',
       database: 'kinetic_app',
-      entities: [User],
+      entities: [User, Nutrition, Exercise, TrainingSession],
       synchronize: false,
     }),
   
     UsersModule,
+  
+    NutritionModule,
+  
+    TrainingSessionsModule,
+  
+    ExercisesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

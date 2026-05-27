@@ -4,6 +4,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -18,9 +19,10 @@ const email = createUserDto.email;
 //2. Rompemos el mail por el @ y nos quedamos por la parte de l izquierda, que es el nombre de usuario
 const extractedName = email.split('@')[0];
 // 3. Preparamos el objeto con los datos que exige nuestra entidad/base de datos
+const hashedPassword = await bcrypt.hash(createUserDto.password, 10); // Hasheamos la contraseña con bcrypt
 const newUser = this.userRepository.create({ 
   email: createUserDto.email,
-  password: createUserDto.password,
+  password: hashedPassword,
   name: extractedName,
 });
 //4. Le decimos a TypeORM que ejecute el "INSERT INTO" en Postgres y esperamos a que se complete la operación

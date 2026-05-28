@@ -10,6 +10,7 @@ import { LoginDto } from './dto/login.dto';
 @Injectable()
 export class UsersService {
   constructor(
+        // @ts-ignore
     @InjectRepository(User) //Le decimos a NestJS: "Tráeme la herramienta para manejar la tabla User"
     private readonly userRepository: Repository<User>,// La guardamos en una variable interna llamada userRepository
   ) {}
@@ -61,19 +62,22 @@ return await this.userRepository.save(newUser);
     };
   }
 
-  findAll() {
-    return `This action returns all users`;
+  async findAll(): Promise<User[]> {
+    return this.userRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(id: number): Promise<User | null> {
+  const user =await this.userRepository.findOne({ where: { id } });
+  return user ?? null;
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(id: number, updateUserDto: UpdateUserDto): Promise<User | null> {
+    await this.userRepository.update(id, updateUserDto);
+    return await this.findOne(id);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(id: number): Promise<{ message: string }> {
+    await this.userRepository.delete(id);
+    return { message: `User with id ${id} has been removed` };
   }
 }

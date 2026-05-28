@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from '@nestjs/common';
 import { TrainingSessionsService } from './training-sessions.service';
 import { CreateTrainingSessionDto } from './dto/create-training-session.dto';
 import { UpdateTrainingSessionDto } from './dto/update-training-session.dto';
@@ -18,17 +18,17 @@ export class TrainingSessionsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.trainingSessionsService.findOne(+id);
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.trainingSessionsService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTrainingSessionDto: UpdateTrainingSessionDto) {
-    return this.trainingSessionsService.update(+id, updateTrainingSessionDto);
+  update(@Param('id', ParseIntPipe) id: number, @Body() updateTrainingSessionDto: UpdateTrainingSessionDto) {
+    return this.trainingSessionsService.update(id, updateTrainingSessionDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.trainingSessionsService.remove(+id);
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.trainingSessionsService.remove(id);
   }
 }

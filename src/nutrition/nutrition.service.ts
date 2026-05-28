@@ -9,8 +9,12 @@ import { User } from '../users/entities/user.entity';
 @Injectable()
 export class NutritionService {
   constructor(
+        // @ts-ignore
+
     @InjectRepository(Nutrition)
     private readonly nutritionRepository: Repository<Nutrition>,
+        // @ts-ignore
+
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
   ) {}

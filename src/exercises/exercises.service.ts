@@ -8,6 +8,8 @@ import { UpdateExerciseDto } from './dto/update-exercise.dto';
 @Injectable()
 export class ExercisesService {
   constructor(
+        // @ts-ignore
+
     @InjectRepository(Exercise)
     private readonly exerciseRepository: Repository<Exercise>,
   ) { }
@@ -31,8 +33,8 @@ export class ExercisesService {
 
   async update(id: number, updateExerciseDto: UpdateExerciseDto) {
     const exercise = await this.findOne(id);
-    const updated = this.exerciseRepository
-    return await this.exerciseRepository.save(exercise);
+    const updatedExercise = this.exerciseRepository.merge(exercise, updateExerciseDto);
+    return await this.exerciseRepository.save(updatedExercise);
   }
 
   async remove(id: number){

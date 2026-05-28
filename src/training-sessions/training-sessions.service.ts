@@ -5,13 +5,15 @@ import { TrainingSession } from './entities/training-session.entity';
 import { CreateTrainingSessionDto } from './dto/create-training-session.dto';
 import { UpdateTrainingSessionDto } from './dto/update-training-session.dto';
 import { User } from '../users/entities/user.entity';
+import { UpdateUserDto } from '../users/dto/update-user.dto';
 
 @Injectable()
 export class TrainingSessionsService {
   constructor(
+    // @ts-ignore
     @InjectRepository(TrainingSession)
     private readonly trainingSessionRepository: Repository<TrainingSession>,
-
+        // @ts-ignore
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
 
@@ -89,4 +91,23 @@ try {
       await queryRunner.release();
     }
   }
+
+  async findAll(): Promise<TrainingSession[]> {
+    return this.trainingSessionRepository.find({ relations: ['user'] });
+  }
+
+  async findOne(id:number): Promise<TrainingSession | null> {
+    const session = await this.trainingSessionRepository.findOne({
+       where: { id }, relations: ['user'] });
+    return session ?? null;
+}
+async update(id: number, updateDto: UpdateTrainingSessionDto): Promise<TrainingSession | null> {
+  await this.trainingSessionRepository.update(id, updateDto);
+  return await this.findOne(id); // Reutilizamos nuestro findOne con await
+}
+
+async remove(id: number): Promise<{ message: string }> {
+  await this.trainingSessionRepository.delete(id);
+  return { message: `Training session with id ${id} has been removed` };
+}
 }

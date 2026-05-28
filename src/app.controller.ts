@@ -17,13 +17,5 @@ export class AppController {
     return this.appService.getHello();
   }
 
-  @Get('gym')
-  getGymMessage(): GymResponeDto {
-    return {
-      user: 'Nere',
-      rol: 'Developer',
-      message: 'Welcome to the gym!',
-      horasRestantes: 3
-    };
-  }
+
 }

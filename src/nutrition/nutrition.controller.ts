@@ -1,11 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from '@nestjs/common';
 import { NutritionService } from './nutrition.service';
 import { CreateNutritionDto } from './dto/create-nutrition.dto';
 import { UpdateNutritionDto } from './dto/update-nutrition.dto';
 
 @Controller('nutrition')
 export class NutritionController {
-  constructor(private readonly nutritionService: NutritionService) {}
+  constructor(private readonly nutritionService: NutritionService) { }
 
   @Post()
   create(@Body() createNutritionDto: CreateNutritionDto) {
@@ -18,17 +18,19 @@ export class NutritionController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.nutritionService.findOne(+id);
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.nutritionService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateNutritionDto: UpdateNutritionDto) {
-    return this.nutritionService.update(+id, updateNutritionDto);
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateNutritionDto: UpdateNutritionDto) {
+    return this.nutritionService.update(id, updateNutritionDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.nutritionService.remove(+id);
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.nutritionService.remove(id);
   }
 }

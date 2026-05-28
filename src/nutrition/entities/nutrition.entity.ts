@@ -27,7 +27,7 @@ export class Nutrition {
     @Column({ type: 'date', default: () => 'CURRENT_DATE' })
     log_date!: Date;
 
-    @ManyToOne(() => User, user => user.id, { onDelete: 'CASCADE' })
+    @ManyToOne(() => User, user => user.food_entries, { onDelete: 'CASCADE' })
     @JoinColumn({ name: 'user_id' })
     user!: User;
 }

@@ -1,4 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, OneToMany, ManyToOne } from 'typeorm';
+import { Nutrition } from '../../nutrition/entities/nutrition.entity';
+import { TrainingSession } from '../../training-sessions/entities/training-session.entity';
 
 @Entity('users') //Le decimos a TypeORM que esta clase se corresponde con la tabla "users" de la base de datos
 export class User {
@@ -31,4 +33,10 @@ export class User {
 
     @CreateDateColumn({ name: 'create_at', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
     createdAt!: Date;
+
+    @OneToMany(() => Nutrition, nutrition => nutrition.user)
+    food_entries!: Nutrition[];
+
+    @OneToMany(() => TrainingSession, trainingSession => trainingSession.user)
+    training_sessions!: TrainingSession[];
 }

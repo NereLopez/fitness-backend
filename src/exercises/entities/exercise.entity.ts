@@ -9,6 +9,6 @@ export class Exercise {
     @Column({ length: 100 })
     name!: string;
 
-    @Column ({ type: 'varbinary', length: 50 })
+    @Column ({ type: 'varchar', length: 50 })
     muscle_group!: string;
 }
